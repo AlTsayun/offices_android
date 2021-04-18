@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "861573924860",
+    "project_id": "offices-mobile",
+    "storage_bucket": "offices-mobile.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:861573924860:android:a7c5fe9aa52cd1b2f7d479",
+        "android_client_info": {
+          "package_name": "com.tsayun.offices"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "861573924860-744t5h0vr8j3gto9guq2rthbfn2hb5dd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDibpPXAWfb2fDQyvOK5B79C0lEoBCWKl0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "861573924860-744t5h0vr8j3gto9guq2rthbfn2hb5dd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
