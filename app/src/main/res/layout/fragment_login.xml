@@ -10,7 +10,7 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
-        tools:context="com.tsayun.offices.ui.login.LoginActivity">
+        tools:context="com.tsayun.offices.ui.login.LoginFragment">
 
         <EditText
             android:id="@+id/username"
@@ -44,7 +44,6 @@
 
         <Button
             android:id="@+id/login"
-            android:enabled="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
@@ -52,6 +51,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="48dp"
             android:layout_marginBottom="64dp"
+            android:enabled="false"
             android:text="@string/action_sign_in"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

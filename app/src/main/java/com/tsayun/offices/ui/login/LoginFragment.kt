@@ -1,44 +1,44 @@
 package com.tsayun.offices.ui.login
 
-import android.app.Activity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.annotation.StringRes
-import androidx.appcompat.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.Toast
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 
 import com.tasyun.offices.R
-import com.tasyun.offices.databinding.ActivityLoginBinding
+import com.tasyun.offices.databinding.FragmentLoginBinding
 
-class LoginActivity : AppCompatActivity() {
+class LoginFragment : Fragment(R.layout.fragment_login) {
 
-    private lateinit var loginViewModel: LoginViewModel
+    //lateinit var
+    private val loginViewModel: LoginViewModel by activityViewModels()
 
-    private lateinit var binding: ActivityLoginBinding
+    private lateinit var binding: FragmentLoginBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) : View {
 
-
-        binding = ActivityLoginBinding.inflate(layoutInflater)
+        binding = FragmentLoginBinding.inflate(inflater, container, false)
         val view = binding.root
-        setContentView(view)
 
         val username = binding.username
         val password = binding.password
         val login = binding.login
         val loading = binding.loading
 
-        loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
-            .get(LoginViewModel::class.java)
+//        loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
+//            .get(LoginViewModel::class.java)
 
-        loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
+        loginViewModel.loginFormState.observe(viewLifecycleOwner, Observer {
             val loginState = it ?: return@Observer
 
 
@@ -53,18 +53,19 @@ class LoginActivity : AppCompatActivity() {
             }
         })
 
-        loginViewModel.loginResult.observe(this@LoginActivity, Observer {
+        loginViewModel.loginResult.observe(viewLifecycleOwner, Observer {
             val loginResult = it ?: return@Observer
 
             loading.visibility = View.GONE
             if (loginResult.error != null) {
-                showLoginFailed(loginResult.error)
+                showLoginFailed(loginResult.error, view)
             }
             if (loginResult.success != null) {
-                updateUiWithUser(loginResult.success)
-                setResult(Activity.RESULT_OK)
+                updateUiWithUser(loginResult.success, view)
+
                 // Complete and destroy login activity once successful
-                finish()
+//                setResult(Activity.RESULT_OK)
+//                finish()
             }
 
         })
@@ -101,21 +102,22 @@ class LoginActivity : AppCompatActivity() {
                 loginViewModel.login(username.text.toString(), password.text.toString())
             }
         }
+        return view
     }
 
-    private fun updateUiWithUser(model: LoggedInUserView) {
+    private fun updateUiWithUser(model: LoggedInUserView, view: View) {
         val welcome = getString(R.string.welcome)
         val displayName = model.displayName
         // TODO : initiate successful logged in experience
         Toast.makeText(
-            applicationContext,
+            view.context,
             "$welcome $displayName",
             Toast.LENGTH_LONG
         ).show()
     }
 
-    private fun showLoginFailed(@StringRes errorString: Int) {
-        Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
+    private fun showLoginFailed(@StringRes errorString: Int, view: View) {
+        Toast.makeText(view.context, errorString, Toast.LENGTH_SHORT).show()
     }
 }
 
