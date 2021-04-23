@@ -1,4 +1,4 @@
-package com.tsayun.offices.ui.login
+package com.tsayun.offices.ui.authentification.login
 
 /**
  * Authentication result : success (user details) or error message.

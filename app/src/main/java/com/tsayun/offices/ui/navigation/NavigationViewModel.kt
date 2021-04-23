@@ -5,11 +5,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class NavigationViewModel : ViewModel() {
-    private val _navigation = MutableLiveData<NavigationState>()
-    val navigation: LiveData<NavigationState> = _navigation
+    private val _navigationState = MutableLiveData<NavigationState>()
+    val navigationState: LiveData<NavigationState> = _navigationState
+    private val _navigationClicked = MutableLiveData<NavigationState>()
+    val navigationClicked: LiveData<NavigationState> = _navigationClicked
 
-    fun navigationChanged(selected: NavigationItem){
-        _navigation.value = NavigationState(selected)
+    fun setNavigation(selected: NavigationItem){
+        _navigationState.value = NavigationState(selected)
+    }
+    fun clickOnNavigation(selected: NavigationItem){
+        _navigationClicked.value = NavigationState(selected)
+        _navigationState.value = NavigationState(selected)
+
     }
 
 }

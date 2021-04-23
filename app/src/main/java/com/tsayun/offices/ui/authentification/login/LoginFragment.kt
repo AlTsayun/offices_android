@@ -1,16 +1,12 @@
-package com.tsayun.offices.ui.login
+package com.tsayun.offices.ui.authentification.login
 
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.annotation.StringRes
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -63,7 +59,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 //                setResult(Activity.RESULT_OK)
 //                finish()
             }
-
         })
 
         username.afterTextChanged {
@@ -102,14 +97,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     }
 
     private fun updateUiWithUser(model: LoggedInUserView, view: View) {
-        val welcome = getString(R.string.welcome)
-        val displayName = model.displayName
-        // TODO : initiate successful logged in experience
-        Toast.makeText(
-            view.context,
-            "$welcome $displayName",
-            Toast.LENGTH_LONG
-        ).show()
+        binding.username.text.clear()
+        binding.password.text.clear()
     }
 
     private fun showLoginFailed(@StringRes errorString: Int, view: View) {

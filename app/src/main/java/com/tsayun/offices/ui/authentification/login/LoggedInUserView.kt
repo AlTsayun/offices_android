@@ -1,9 +1,12 @@
-package com.tsayun.offices.ui.login
+package com.tsayun.offices.ui.authentification.login
+
+import java.util.*
 
 /**
  * User details post authentication that is exposed to the UI
  */
 data class LoggedInUserView(
+        val id: UUID,
         val displayName: String
         //... other data fields that may be accessible to the UI
 )

@@ -1,6 +1,5 @@
 package com.tsayun.offices.ui.main
 
-import android.content.Context
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -8,27 +7,23 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
-import androidx.fragment.app.replace
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.PreferenceManager
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
+import com.google.gson.Gson
 import com.tasyun.offices.R
 import com.tsayun.offices.ui.common.RepositoryFactory
 import com.tsayun.offices.ui.common.RepositoryFactoryImpl
-import com.tsayun.offices.ui.common.ViewModelFactory
 import com.tsayun.offices.ui.common.ViewModelFactoryImpl
 import com.tsayun.offices.ui.itemsOverview.ItemsOverviewFragment
 import com.tsayun.offices.ui.itemsOverview.ItemsOverviewViewModel
-import com.tsayun.offices.ui.login.LoginFragment
-import com.tsayun.offices.ui.login.LoginViewModel
+import com.tsayun.offices.ui.authentification.login.LoggedInUserView
+import com.tsayun.offices.ui.authentification.login.LoginFragment
+import com.tsayun.offices.ui.authentification.login.LoginViewModel
 import com.tsayun.offices.ui.navigation.NavigationFragment
 import com.tsayun.offices.ui.navigation.NavigationItem
 import com.tsayun.offices.ui.navigation.NavigationViewModel
 import com.tsayun.offices.ui.settings.SettingsFragment
-import com.tsayun.offices.ui.settings.SettingsViewModel
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
@@ -62,18 +57,37 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         loginFragment = LoginFragment()
         itemsOverviewFragment = ItemsOverviewFragment()
         settingsFragment = SettingsFragment()
-        homeFragment = loginFragment
+
+        //todo: fix getString
+        homeFragment = if (getDefaultSharedPreferences(this).contains(
+                getString(
+                    resources.getIdentifier(
+                        "pref_key_logged_in_user",
+                        "string",
+                        packageName
+                    )
+                )
+            )
+        ) {
+            itemsOverviewFragment
+        } else {
+            loginFragment
+        }
 
 
         loginViewModel.loginResult.observe(this, Observer {
             val loginResult = it ?: return@Observer
             if (loginResult.success != null) {
-                homeFragment = itemsOverviewFragment
-                switchTo(homeFragment)
+                val editor = getDefaultSharedPreferences(this).edit()
+                editor.putString(
+                    getString(R.string.pref_key_logged_in_user),
+                    Gson().toJson(loginResult.success)
+                )
+                editor.apply()
             }
             if (loginResult.error != null) {
-                homeFragment = loginFragment
-                switchTo(homeFragment)
+//                homeFragment = loginFragment
+//                switchTo(homeFragment)
             }
         })
 
@@ -89,7 +103,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         // need to be saved in field as gets removed by gc otherwise
         onSharedPreferenceChangeListener =
             SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
-                if (key == "font_size") {
+                if (key == getString(R.string.pref_key_font_size)) {
                     val fontSize = sharedPreferences.getString("font_size", "a")
                     Toast.makeText(
                         applicationContext,
@@ -97,16 +111,39 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
+                if (key == getString(R.string.pref_key_logged_in_user)) {
+                    val loggedInUserStr = sharedPreferences.getString(
+                        getString(R.string.pref_key_logged_in_user),
+                        null
+                    )
+                    if (loggedInUserStr != null) {
+                        val model = Gson().fromJson(loggedInUserStr, LoggedInUserView::class.java)
+                        val welcome = getString(R.string.welcome)
+                        val displayName = model.displayName
+                        // TODO : initiate successful logged in experience
+                        Toast.makeText(
+                            applicationContext,
+                            "$welcome $displayName",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        homeFragment = itemsOverviewFragment
+                        switchTo(homeFragment)
+                    } else {
+                        homeFragment = loginFragment
+                        switchTo(homeFragment)
+                    }
+
+                }
             }
 
         val sharedPreferences = getDefaultSharedPreferences(this)
         sharedPreferences.registerOnSharedPreferenceChangeListener(onSharedPreferenceChangeListener)
 
 //        val editor = getDefaultSharedPreferences(this).edit()
-//        editor.putString("font_bonk", "fff")
+//        editor.putString()
 //        editor.apply()
 
-        navigationViewModel.navigation.observe(this, Observer {
+        navigationViewModel.navigationClicked.observe(this, Observer {
             val navigation = it ?: return@Observer
             if (navigation.selected == NavigationItem.SETTINGS) {
                 switchTo(settingsFragment)
@@ -126,6 +163,11 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     }
 
     private fun switchTo(mainFragment: Fragment) {
+        if (mainFragment == settingsFragment) {
+            navigationViewModel.setNavigation(NavigationItem.SETTINGS)
+        } else {
+            navigationViewModel.setNavigation(NavigationItem.HOME)
+        }
         supportFragmentManager.commit {
             setReorderingAllowed(true)
             replace(R.id.main_fragment_container_view, mainFragment)

@@ -1,4 +1,4 @@
-package com.tsayun.offices.ui.login
+package com.tsayun.offices.ui.authentification.login
 
 /**
  * Data validation state of the login form.

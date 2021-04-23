@@ -3,7 +3,7 @@ package com.tsayun.offices.ui.common
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.tsayun.offices.ui.itemsOverview.ItemsOverviewViewModel
-import com.tsayun.offices.ui.login.LoginViewModel
+import com.tsayun.offices.ui.authentification.login.LoginViewModel
 import com.tsayun.offices.ui.navigation.NavigationViewModel
 
 interface ViewModelFactory :ViewModelProvider.Factory

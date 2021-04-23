@@ -21,4 +21,10 @@
     <string name="overview_item_address">address: %1$s</string>
     <string name="overview_item_roomCount">rooms: %1$d</string>
     <string name="overview_item_area">area: %1$.2f m2</string>
+
+    <!--  preferences  -->
+    <string name="pref_key_logged_in_user">logged_in_user</string>
+    <string name="pref_key_log_out">log_out</string>
+    <string name="pref_key_font_size">font_size</string>
+    <string name="pref_title_log_out">Log out</string>
 </resources>
