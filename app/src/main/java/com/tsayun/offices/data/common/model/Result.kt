@@ -1,4 +1,4 @@
-package com.tsayun.offices.data.login
+package com.tsayun.offices.data.common.model
 
 /**
  * A generic class that holds a value with its loading status.

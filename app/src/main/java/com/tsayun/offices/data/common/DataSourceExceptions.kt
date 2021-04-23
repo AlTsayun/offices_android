@@ -1,4 +1,4 @@
-package com.tsayun.offices.data.common.dataSource
+package com.tsayun.offices.data.office.dataSource
 
 import com.tsayun.offices.data.common.ApplicationException
 

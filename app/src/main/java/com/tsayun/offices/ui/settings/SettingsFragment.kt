@@ -1,18 +1,16 @@
 package com.tsayun.offices.ui.settings
 
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import android.widget.Toast
+import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.PreferenceManager
+import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.tasyun.offices.R
-import com.tasyun.offices.databinding.FragmentNavigationBinding
 
-class SettingsFragment : Fragment(R.layout.fragment_navigation) {
-    private lateinit var binding: FragmentNavigationBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) : View {
-        binding = FragmentNavigationBinding.inflate(inflater, container, false)
-        return binding.root
+class SettingsFragment : PreferenceFragmentCompat() {
+    override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
+        setPreferencesFromResource(R.xml.preferences, rootKey)
     }
 }

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:key="rootKey">
+
+    <DropDownPreference
+        android:defaultValue="1"
+        app:key="font_size"
+        app:title="@string/font_size_preference_title"
+        android:entries="@array/font_size_labels"
+        android:entryValues="@array/font_size_values"
+        app:useSimpleSummaryProvider="true"
+        >
+    </DropDownPreference>
+
+    <Preference
+        app:key="logout"
+        app:title="Log out"
+        app:summary="Currently not logged in">
+    </Preference>
+
+</PreferenceScreen>

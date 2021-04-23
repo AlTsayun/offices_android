@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.util.Patterns
-import com.tsayun.offices.data.login.LoginRepository
-import com.tsayun.offices.data.login.Result
+import com.tsayun.offices.data.authentification.login.LoginRepository
+import com.tsayun.offices.data.common.model.Result
 
 import com.tasyun.offices.R
 

@@ -1,6 +1,7 @@
-package com.tsayun.offices.data.login
+package com.tsayun.offices.data.authentification.login
 
-import com.tsayun.offices.data.login.model.LoggedInUser
+import com.tsayun.offices.data.authentification.login.model.LoggedInUser
+import com.tsayun.offices.data.common.model.Result
 
 /**
  * Class that requests authentication and user information from the remote data source and

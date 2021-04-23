@@ -17,10 +17,10 @@ import androidx.fragment.app.activityViewModels
 
 import com.tasyun.offices.R
 import com.tasyun.offices.databinding.FragmentLoginBinding
+import com.tsayun.offices.ui.common.afterTextChanged
 
 class LoginFragment : Fragment(R.layout.fragment_login) {
 
-    //lateinit var
     private val loginViewModel: LoginViewModel by activityViewModels()
 
     private lateinit var binding: FragmentLoginBinding
@@ -35,12 +35,8 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         val login = binding.login
         val loading = binding.loading
 
-//        loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
-//            .get(LoginViewModel::class.java)
-
         loginViewModel.loginFormState.observe(viewLifecycleOwner, Observer {
             val loginState = it ?: return@Observer
-
 
             // disable login button unless both username / password is valid
             login.isEnabled = loginState.isDataValid
@@ -119,19 +115,4 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private fun showLoginFailed(@StringRes errorString: Int, view: View) {
         Toast.makeText(view.context, errorString, Toast.LENGTH_SHORT).show()
     }
-}
-
-/**
- * Extension function to simplify setting an afterTextChanged action to EditText components.
- */
-fun EditText.afterTextChanged(afterTextChanged: (String) -> Unit) {
-    this.addTextChangedListener(object : TextWatcher {
-        override fun afterTextChanged(editable: Editable?) {
-            afterTextChanged.invoke(editable.toString())
-        }
-
-        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-
-        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-    })
 }
