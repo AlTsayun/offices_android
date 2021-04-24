@@ -1,4 +1,4 @@
-package com.tsayun.offices.data.authentification.common.model
+package com.tsayun.offices.data.authentication.common.model
 
 import com.google.firebase.database.IgnoreExtraProperties
 import java.util.*

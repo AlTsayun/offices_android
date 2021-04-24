@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.tsayun.offices.data.office.OfficesRepository
+import java.text.FieldPosition
 
 class ItemsOverviewViewModel(private val officesRepository: OfficesRepository) : ViewModel() {
     private val _items = MutableLiveData<List<ItemOverviewView>>()
@@ -28,8 +29,8 @@ class ItemsOverviewViewModel(private val officesRepository: OfficesRepository) :
         })
     }
 
-    fun selectItem(index: Int) {
-        _selectedItem.value = _items.value?.get(index)
+    fun selectItem(position: Int) {
+        _selectedItem.value = _items.value?.get(position)
     }
 
 }

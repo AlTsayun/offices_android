@@ -1,6 +1,6 @@
-package com.tsayun.offices.data.authentification.login
+package com.tsayun.offices.data.authentication.login
 
-import com.tsayun.offices.data.authentification.login.model.LoggedInUser
+import com.tsayun.offices.data.authentication.login.model.LoggedInUser
 import com.tsayun.offices.data.common.model.Result
 
 /**

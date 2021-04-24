@@ -1,4 +1,4 @@
-package com.tsayun.offices.data.authentification.login.model
+package com.tsayun.offices.data.authentication.login.model
 
 import java.util.*
 

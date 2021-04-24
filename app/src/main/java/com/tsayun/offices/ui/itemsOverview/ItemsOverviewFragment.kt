@@ -29,7 +29,7 @@ class ItemsOverviewFragment : Fragment(R.layout.fragment_items_overview) {
         this.inflater = inflater
         binding = FragmentItemsOverviewBinding.inflate(inflater, container, false)
 
-        binding.itemsListView.setOnItemClickListener{ paremt, view, position, id ->
+        binding.itemsListView.setOnItemClickListener{ parent, view, position, id ->
             itemsOverviewViewModel.selectItem(position)
         }
 

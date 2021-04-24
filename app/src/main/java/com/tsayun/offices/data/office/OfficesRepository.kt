@@ -2,7 +2,6 @@ package com.tsayun.offices.data.office
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
-import com.tsayun.offices.data.authentification.login.LoginDataSource
 import com.tsayun.offices.data.office.models.OfficeDetails
 import com.tsayun.offices.data.office.models.OfficePreview
 

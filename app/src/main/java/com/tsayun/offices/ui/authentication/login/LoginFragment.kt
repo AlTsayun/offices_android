@@ -1,4 +1,4 @@
-package com.tsayun.offices.ui.authentification.login
+package com.tsayun.offices.ui.authentication.login
 
 import androidx.lifecycle.Observer
 import android.os.Bundle
@@ -26,16 +26,16 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         binding = FragmentLoginBinding.inflate(inflater, container, false)
         val view = binding.root
 
-        val username = binding.username
-        val password = binding.password
-        val login = binding.login
-        val loading = binding.loading
+        val username = binding.loginUsername
+        val password = binding.loginPassword
+        val signIn = binding.loginSignInButton
+        val createAccount = binding.loginCreateAccountButton
 
         loginViewModel.loginFormState.observe(viewLifecycleOwner, Observer {
             val loginState = it ?: return@Observer
 
             // disable login button unless both username / password is valid
-            login.isEnabled = loginState.isDataValid
+            signIn.isEnabled = loginState.isDataValid
 
             if (loginState.usernameError != null) {
                 username.error = getString(loginState.usernameError)
@@ -48,7 +48,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         loginViewModel.loginResult.observe(viewLifecycleOwner, Observer {
             val loginResult = it ?: return@Observer
 
-            loading.visibility = View.GONE
             if (loginResult.error != null) {
                 showLoginFailed(loginResult.error, view)
             }
@@ -88,17 +87,21 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 false
             }
 
-            login.setOnClickListener {
-                loading.visibility = View.VISIBLE
+            signIn.setOnClickListener {
                 loginViewModel.login(username.text.toString(), password.text.toString())
             }
+
+            createAccount.setOnClickListener{
+                loginViewModel.requestSignup(username.text.toString(), password.text.toString())
+            }
+
         }
         return view
     }
 
     private fun updateUiWithUser(model: LoggedInUserView, view: View) {
-        binding.username.text.clear()
-        binding.password.text.clear()
+        binding.loginUsername.text.clear()
+        binding.loginPassword.text.clear()
     }
 
     private fun showLoginFailed(@StringRes errorString: Int, view: View) {

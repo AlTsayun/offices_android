@@ -1,13 +1,14 @@
-package com.tsayun.offices.ui.authentification.login
+package com.tsayun.offices.ui.authentication.login
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import android.util.Patterns
-import com.tsayun.offices.data.authentification.login.LoginRepository
+import com.tsayun.offices.data.authentication.login.LoginRepository
 import com.tsayun.offices.data.common.model.Result
 
 import com.tasyun.offices.R
+import com.tsayun.offices.ui.authentication.common.SignupCredentials
+import com.tsayun.offices.ui.authentication.common.Validation
 
 class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
 
@@ -16,6 +17,9 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
 
     private val _loginResult = MutableLiveData<LoginResult>()
     val loginResult: LiveData<LoginResult> = _loginResult
+
+    private val _signupRequest = MutableLiveData<SignupCredentials>()
+    val signupRequest: LiveData<SignupCredentials> = _signupRequest
 
     fun login(username: String, password: String) {
         // can be launched in a separate asynchronous job
@@ -29,26 +33,16 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
     }
 
     fun loginDataChanged(username: String, password: String) {
-        if (!isUserNameValid(username)) {
+        if (!Validation.isUserNameValid(username)) {
             _loginForm.value = LoginFormState(usernameError = R.string.invalid_username)
-        } else if (!isPasswordValid(password)) {
+        } else if (!Validation.isPasswordValid(password)) {
             _loginForm.value = LoginFormState(passwordError = R.string.invalid_password)
         } else {
             _loginForm.value = LoginFormState(isDataValid = true)
         }
     }
 
-    // A placeholder username validation check
-    private fun isUserNameValid(username: String): Boolean {
-        return if (username.contains('@')) {
-            Patterns.EMAIL_ADDRESS.matcher(username).matches()
-        } else {
-            false //username.isNotBlank()
-        }
-    }
-
-    // A placeholder password validation check
-    private fun isPasswordValid(password: String): Boolean {
-        return password.length > 5
+    fun requestSignup(username: String, password: String) {
+        _signupRequest.value = SignupCredentials(username = username, password = password)
     }
 }

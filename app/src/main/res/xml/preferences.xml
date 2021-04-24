@@ -6,7 +6,7 @@
     <DropDownPreference
         android:defaultValue="1"
         app:key="@string/pref_key_font_size"
-        app:title="@string/font_size_preference_title"
+        app:title="@string/pref_title_font_size"
         android:entries="@array/font_size_labels"
         android:entryValues="@array/font_size_values"
         app:useSimpleSummaryProvider="true"
@@ -17,12 +17,6 @@
         app:key="@string/pref_key_logged_in_user"
         app:isPreferenceVisible="false">
     </Preference>
-
-    <CheckBoxPreference
-        android:key="chb2"
-        android:summary="Description of checkbox 2"
-        android:title="CheckBox 2">
-    </CheckBoxPreference>
 
     <!--  todo:put logged in user to logout summary  -->
     <Preference
