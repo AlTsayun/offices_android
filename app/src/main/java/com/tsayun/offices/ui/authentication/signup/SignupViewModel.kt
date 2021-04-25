@@ -3,7 +3,7 @@ package com.tsayun.offices.ui.authentication.signup
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.tasyun.offices.R
+import com.tsayun.offices.R
 import com.tsayun.offices.data.authentication.signup.SignupRepository
 import com.tsayun.offices.data.common.model.Result
 import com.tsayun.offices.ui.authentication.common.LoginCredentials

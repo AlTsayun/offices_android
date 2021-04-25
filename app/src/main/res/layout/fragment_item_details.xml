@@ -7,7 +7,7 @@
     <data>
         <variable
             name="item"
-            type="com.tsayun.offices.ui.itemDetails.ItemDetailsView" />
+            type="com.tsayun.offices.ui.item.itemsOverview.ItemOverviewView" />
     </data>
 
 <androidx.constraintlayout.widget.ConstraintLayout

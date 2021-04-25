@@ -1,4 +1,4 @@
-package com.tsayun.offices.ui.itemsOverview
+package com.tsayun.offices.ui.item.itemsOverview
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,9 +8,9 @@ import android.widget.BaseAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import com.tasyun.offices.R
-import com.tasyun.offices.databinding.FragmentItemsOverviewBinding
-import com.tasyun.offices.databinding.OverviewItemBinding
+import com.tsayun.offices.R
+import com.tsayun.offices.databinding.FragmentItemsOverviewBinding
+import com.tsayun.offices.databinding.OverviewItemBinding
 
 
 class ItemsOverviewFragment : Fragment(R.layout.fragment_items_overview) {

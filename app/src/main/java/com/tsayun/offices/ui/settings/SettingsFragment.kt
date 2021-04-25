@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
-import com.tasyun.offices.R
+import com.tsayun.offices.R
 
 
 class SettingsFragment : PreferenceFragmentCompat() {

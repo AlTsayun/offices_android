@@ -11,16 +11,15 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import com.google.gson.Gson
-import com.tasyun.offices.R
-import com.tsayun.offices.ui.common.RepositoryFactory
-import com.tsayun.offices.ui.common.RepositoryFactoryImpl
+import com.tsayun.offices.R
+import com.tsayun.offices.data.common.RepositoryFactory
+import com.tsayun.offices.data.common.RepositoryFactoryImpl
 import com.tsayun.offices.ui.common.ViewModelFactoryImpl
-import com.tsayun.offices.ui.itemsOverview.ItemsOverviewFragment
-import com.tsayun.offices.ui.itemsOverview.ItemsOverviewViewModel
+import com.tsayun.offices.ui.item.itemsOverview.ItemsOverviewFragment
+import com.tsayun.offices.ui.item.itemsOverview.ItemsOverviewViewModel
 import com.tsayun.offices.ui.authentication.login.LoggedInUserView
 import com.tsayun.offices.ui.authentication.login.LoginFragment
 import com.tsayun.offices.ui.authentication.login.LoginViewModel
-import com.tsayun.offices.ui.authentication.signup.SignupFormState
 import com.tsayun.offices.ui.authentication.signup.SignupFragment
 import com.tsayun.offices.ui.authentication.signup.SignupViewModel
 import com.tsayun.offices.ui.map.MapsFragment
@@ -28,7 +27,6 @@ import com.tsayun.offices.ui.navigation.NavigationFragment
 import com.tsayun.offices.ui.navigation.NavigationItem
 import com.tsayun.offices.ui.navigation.NavigationViewModel
 import com.tsayun.offices.ui.settings.SettingsFragment
-import kotlin.math.log
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
@@ -80,8 +78,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                 )
             )
         ) {
+            navigationViewModel.enableMapState()
             itemsOverviewFragment
         } else {
+            navigationViewModel.disableMapState()
             loginFragment
         }
 
@@ -129,8 +129,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
         itemsOverviewViewModel.selectedItem.observe(this, Observer {
             val selectedItem = it ?: return@Observer
-
-
 
             Toast.makeText(
                 applicationContext,

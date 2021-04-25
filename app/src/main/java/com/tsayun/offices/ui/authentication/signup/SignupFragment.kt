@@ -10,8 +10,8 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import com.tasyun.offices.R
-import com.tasyun.offices.databinding.FragmentSignupBinding
+import com.tsayun.offices.R
+import com.tsayun.offices.databinding.FragmentSignupBinding
 import com.tsayun.offices.ui.common.afterTextChanged
 
 class SignupFragment : Fragment(R.layout.fragment_signup) {

@@ -9,12 +9,6 @@ class OfficesRepository(private val dataSource: OfficeDataSource) {
 
     val offices: LiveData<MutableMap<String, OfficeDetails>> = dataSource.offices
 
-    init {
-        offices.observeForever(Observer {
-            val offices = it ?: return@Observer
-        })
-    }
-
     fun getAllOfficePreviews(): List<OfficePreview> {
         return dataSource.getAllOfficePreviews()
     }

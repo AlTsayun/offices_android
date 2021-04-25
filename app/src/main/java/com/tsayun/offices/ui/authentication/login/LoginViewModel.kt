@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.tsayun.offices.data.authentication.login.LoginRepository
 import com.tsayun.offices.data.common.model.Result
 
-import com.tasyun.offices.R
+import com.tsayun.offices.R
 import com.tsayun.offices.ui.authentication.common.SignupCredentials
 import com.tsayun.offices.ui.authentication.common.Validation
 

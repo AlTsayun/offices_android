@@ -1,4 +1,4 @@
-package com.tsayun.offices.ui.itemDetails
+package com.tsayun.offices.ui.item.itemDetails
 
 import java.util.*
 

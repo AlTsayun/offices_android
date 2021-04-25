@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
-import com.tasyun.offices.R
-import com.tasyun.offices.databinding.FragmentNavigationBinding
+import com.tsayun.offices.R
+import com.tsayun.offices.databinding.FragmentNavigationBinding
 
 class NavigationFragment : Fragment(R.layout.fragment_navigation) {
 

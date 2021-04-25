@@ -11,8 +11,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 
-import com.tasyun.offices.R
-import com.tasyun.offices.databinding.FragmentLoginBinding
+import com.tsayun.offices.R
+import com.tsayun.offices.databinding.FragmentLoginBinding
 import com.tsayun.offices.ui.common.afterTextChanged
 
 class LoginFragment : Fragment(R.layout.fragment_login) {

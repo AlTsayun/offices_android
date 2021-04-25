@@ -1,4 +1,4 @@
-package com.tsayun.offices.ui.itemDetails
+package com.tsayun.offices.ui.item.itemDetails
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,6 +10,10 @@ class ItemDetailsViewModel(private val officeRepository: OfficeRepository) : Vie
 
     private val _item = MutableLiveData<ItemDetailsView?>()
     val item: LiveData<ItemDetailsView?> = _item
+
+
+    private val _editRequest = MutableLiveData<ItemDetailsView?>()
+    val editRequest: LiveData<ItemDetailsView?> = _editRequest
 
     fun setItem(id:UUID){
         val persistedItem = officeRepository.getByIdOrNull(id)
@@ -24,6 +28,10 @@ class ItemDetailsViewModel(private val officeRepository: OfficeRepository) : Vie
         }else {
             null
         }
+    }
+
+    fun requestEditCurrentItem(){
+        _editRequest.value = _item.value
     }
 
 }
