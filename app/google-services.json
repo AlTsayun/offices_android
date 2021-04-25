@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "861573924860",
+    "firebase_url": "https://offices-mobile-default-rtdb.firebaseio.com",
     "project_id": "offices-mobile",
     "storage_bucket": "offices-mobile.appspot.com"
   },

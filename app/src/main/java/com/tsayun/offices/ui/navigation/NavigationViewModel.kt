@@ -20,7 +20,6 @@ class NavigationViewModel : ViewModel() {
     fun clickOnNavigation(selected: NavigationItem){
         _navigationClicked.value = NavigationState(selected)
         _navigationState.value = NavigationState(selected)
-
     }
 
     fun disableMapState(){

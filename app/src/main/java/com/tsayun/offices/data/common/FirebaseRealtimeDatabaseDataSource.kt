@@ -118,5 +118,4 @@ class FirebaseRealtimeDatabaseDataSource(private val databaseRef: DatabaseRefere
             return Result.Error(IOException("Error singing up"))
         }
     }
-
 }

@@ -23,6 +23,7 @@ import com.tsayun.offices.ui.authentication.login.LoginViewModel
 import com.tsayun.offices.ui.authentication.signup.SignupFormState
 import com.tsayun.offices.ui.authentication.signup.SignupFragment
 import com.tsayun.offices.ui.authentication.signup.SignupViewModel
+import com.tsayun.offices.ui.map.MapsFragment
 import com.tsayun.offices.ui.navigation.NavigationFragment
 import com.tsayun.offices.ui.navigation.NavigationItem
 import com.tsayun.offices.ui.navigation.NavigationViewModel
@@ -36,6 +37,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private lateinit var itemsOverviewFragment: ItemsOverviewFragment
     private lateinit var settingsFragment: SettingsFragment
     private lateinit var homeFragment: Fragment
+    private lateinit var mapsFragment: MapsFragment
 
     private lateinit var repoFactory: RepositoryFactory
 
@@ -65,6 +67,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         signupFragment = SignupFragment()
         itemsOverviewFragment = ItemsOverviewFragment()
         settingsFragment = SettingsFragment()
+        mapsFragment = MapsFragment()
 
         //todo: fix getString(R.string)
         homeFragment = if (getDefaultSharedPreferences(this).contains(
@@ -81,6 +84,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         } else {
             loginFragment
         }
+
 
         signupViewModel.signupResult.observe(this, Observer {
             val signupResult = it?: return@Observer
@@ -186,6 +190,9 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             }
             if (navigation.selected == NavigationItem.HOME) {
                 switchTo(homeFragment)
+            }
+            if (navigation.selected == NavigationItem.MAP) {
+                switchTo(mapsFragment)
             }
         })
 
