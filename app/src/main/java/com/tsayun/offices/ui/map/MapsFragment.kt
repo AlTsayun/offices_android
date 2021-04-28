@@ -6,15 +6,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.tsayun.offices.R
 
 class MapsFragment : Fragment() {
+
+    private val mapsViewModel: MapsViewModel by activityViewModels()
+    private var markerToItemMapView: MutableMap<Marker, ItemMapView> = mutableMapOf()
 
     private val callback = OnMapReadyCallback { googleMap ->
         /**
@@ -26,12 +32,24 @@ class MapsFragment : Fragment() {
          * install it inside the SupportMapFragment. This method will only be triggered once the
          * user has installed Google Play services and returned to the app.
          */
-        val sydney = LatLng(-34.0, 151.0)
-        googleMap.setOnMapClickListener {
-            val markerOptions = MarkerOptions()
+        mapsViewModel.items.observe(viewLifecycleOwner, Observer {
+            it ?: return@Observer
+            googleMap.clear()
+            it.forEach {
+                val marker =
+                    googleMap.addMarker(MarkerOptions().position(it.position).title(it.title))
+                marker.showInfoWindow()
+                markerToItemMapView[marker] = it
+            }
+        })
+
+//        val sydney = LatLng(-34.0, 151.0)
+//        googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
+        googleMap.setOnMarkerClickListener {
+            it ?: return@setOnMarkerClickListener false
+            mapsViewModel.selectItem(markerToItemMapView[it])
+            return@setOnMarkerClickListener true
         }
-        googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
     }
 
     override fun onCreateView(

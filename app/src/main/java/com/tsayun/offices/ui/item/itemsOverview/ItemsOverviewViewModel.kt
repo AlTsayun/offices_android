@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
-import com.tsayun.offices.data.office.OfficesRepository
+import com.tsayun.offices.data.office.OfficePreviewsRepository
 
-class ItemsOverviewViewModel(private val officesRepository: OfficesRepository) : ViewModel() {
+class ItemsOverviewViewModel(private val officePreviewsRepository: OfficePreviewsRepository) : ViewModel() {
     private val _items = MutableLiveData<List<ItemOverviewView>>()
     val items: LiveData<List<ItemOverviewView>> = _items
 
@@ -14,9 +14,9 @@ class ItemsOverviewViewModel(private val officesRepository: OfficesRepository) :
     val selectedItem: LiveData<ItemOverviewView?> = _selectedItem
 
     init {
-        officesRepository.offices.observeForever(Observer {
-            val offices = it ?: return@Observer
-            _items.value = offices.values.map {
+        officePreviewsRepository.officePreviews.observeForever(Observer {
+            val officePreviews = it ?: return@Observer
+            _items.value = officePreviews.map {
                 ItemOverviewView(
                     it.id,
                     it.name,

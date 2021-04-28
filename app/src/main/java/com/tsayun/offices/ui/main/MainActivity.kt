@@ -22,7 +22,10 @@ import com.tsayun.offices.ui.authentication.login.LoginFragment
 import com.tsayun.offices.ui.authentication.login.LoginViewModel
 import com.tsayun.offices.ui.authentication.signup.SignupFragment
 import com.tsayun.offices.ui.authentication.signup.SignupViewModel
+import com.tsayun.offices.ui.item.itemDetails.ItemDetailsFragment
+import com.tsayun.offices.ui.item.itemDetails.ItemDetailsViewModel
 import com.tsayun.offices.ui.map.MapsFragment
+import com.tsayun.offices.ui.map.MapsViewModel
 import com.tsayun.offices.ui.navigation.NavigationFragment
 import com.tsayun.offices.ui.navigation.NavigationItem
 import com.tsayun.offices.ui.navigation.NavigationViewModel
@@ -36,6 +39,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private lateinit var settingsFragment: SettingsFragment
     private lateinit var homeFragment: Fragment
     private lateinit var mapsFragment: MapsFragment
+    private lateinit var itemDetailsFragment: ItemDetailsFragment
 
     private lateinit var repoFactory: RepositoryFactory
 
@@ -43,6 +47,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private lateinit var signupViewModel: SignupViewModel
     private lateinit var navigationViewModel: NavigationViewModel
     private lateinit var itemsOverviewViewModel: ItemsOverviewViewModel
+    private lateinit var itemDetailsViewModel: ItemDetailsViewModel
+    private lateinit var mapsViewModel: MapsViewModel
 
     private lateinit var vmProvider: ViewModelProvider
 
@@ -59,6 +65,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         signupViewModel = vmProvider.get(SignupViewModel::class.java)
         navigationViewModel = vmProvider.get(NavigationViewModel::class.java)
         itemsOverviewViewModel = vmProvider.get(ItemsOverviewViewModel::class.java)
+        itemDetailsViewModel = vmProvider.get(ItemDetailsViewModel::class.java)
+        mapsViewModel = vmProvider.get(MapsViewModel::class.java)
 
         // fragments
         loginFragment = LoginFragment()
@@ -66,6 +74,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         itemsOverviewFragment = ItemsOverviewFragment()
         settingsFragment = SettingsFragment()
         mapsFragment = MapsFragment()
+        itemDetailsFragment = ItemDetailsFragment()
+
 
         //todo: fix getString(R.string)
         homeFragment = if (getDefaultSharedPreferences(this).contains(
@@ -135,6 +145,39 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                 "Item ${selectedItem.name} is selected",
                 Toast.LENGTH_SHORT
             ).show()
+            itemDetailsViewModel.setItem(selectedItem.id)
+            homeFragment = itemDetailsFragment
+            switchTo(homeFragment)
+        })
+
+        mapsViewModel.selectedItem.observe(this, Observer {
+            val selectedItem = it ?: return@Observer
+
+            Toast.makeText(
+                applicationContext,
+                "Item ${selectedItem.title} is selected from map",
+                Toast.LENGTH_SHORT
+            ).show()
+            itemDetailsViewModel.setItem(selectedItem.id)
+            homeFragment = itemDetailsFragment
+            switchTo(homeFragment)
+        })
+
+        itemDetailsViewModel.openImagesRequest.observe(this, Observer {
+            it ?: return@Observer
+            Toast.makeText(
+                applicationContext,
+                "Images of ${it.name} are opened",
+                Toast.LENGTH_SHORT
+            ).show()
+        })
+        itemDetailsViewModel.editRequest.observe(this, Observer {
+            it ?: return@Observer
+            Toast.makeText(
+                applicationContext,
+                "${it.name} is edited",
+                Toast.LENGTH_SHORT
+            ).show()
         })
 
         // need to be saved in field as gets removed by gc otherwise
@@ -187,12 +230,17 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                 switchTo(settingsFragment)
             }
             if (navigation.selected == NavigationItem.HOME) {
+                if (homeFragment != loginFragment && homeFragment != signupFragment){
+                    homeFragment = itemsOverviewFragment
+                }
                 switchTo(homeFragment)
             }
             if (navigation.selected == NavigationItem.MAP) {
                 switchTo(mapsFragment)
             }
         })
+
+
 
         if (savedInstanceState == null) {
             supportFragmentManager.commit {

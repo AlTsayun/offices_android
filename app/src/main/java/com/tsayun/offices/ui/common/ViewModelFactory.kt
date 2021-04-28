@@ -6,6 +6,8 @@ import com.tsayun.offices.data.common.RepositoryFactory
 import com.tsayun.offices.ui.item.itemsOverview.ItemsOverviewViewModel
 import com.tsayun.offices.ui.authentication.login.LoginViewModel
 import com.tsayun.offices.ui.authentication.signup.SignupViewModel
+import com.tsayun.offices.ui.item.itemDetails.ItemDetailsViewModel
+import com.tsayun.offices.ui.map.MapsViewModel
 import com.tsayun.offices.ui.navigation.NavigationViewModel
 
 interface ViewModelFactory :ViewModelProvider.Factory
@@ -23,11 +25,17 @@ class ViewModelFactoryImpl(private val repositoryFactory: RepositoryFactory): Vi
         }
 
         if (modelClass.isAssignableFrom(ItemsOverviewViewModel::class.java)) {
-            return ItemsOverviewViewModel(repositoryFactory.officesRepository) as T
+            return ItemsOverviewViewModel(repositoryFactory.officePreviewsRepository) as T
         }
 
         if (modelClass.isAssignableFrom(SignupViewModel::class.java)) {
             return SignupViewModel(repositoryFactory.signupRepository) as T
+        }
+        if (modelClass.isAssignableFrom(ItemDetailsViewModel::class.java)) {
+            return ItemDetailsViewModel(repositoryFactory.officeRepository) as T
+        }
+        if (modelClass.isAssignableFrom(MapsViewModel::class.java)) {
+            return MapsViewModel(repositoryFactory.officeOnMapRepository) as T
         }
 
         throw IllegalArgumentException("Unknown ViewModel class")

@@ -5,16 +5,103 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <!--    need to use @{item != null}    -->
+        <import type="android.view.View" />
+
         <variable
             name="item"
-            type="com.tsayun.offices.ui.item.itemsOverview.ItemOverviewView" />
+            type="com.tsayun.offices.ui.item.itemDetails.ItemDetailsView" />
     </data>
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="@{(item == null) ? View.GONE : View.VISIBLE}">
+
+        <LinearLayout
+            android:id="@+id/item_details_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="?android:attr/listPreferredItemHeight"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{@string/item_details_name(item.name)}"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{@string/item_details_address(item.address)}" />
 
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{@string/item_details_area(item.area)}" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{@string/item_details_roomCount(item.roomCount)}" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{@string/item_details_description(item.description)}" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{@string/item_details_floor(item.floor, item.numberOfFloors)}" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{item.hasBathroom ? @string/item_details_hasBathroom : @string/item_details_hasNoBathroom}" />
+
+            <TextView
+                android:id="@+id/item_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{@string/item_details_lastRenovationDate(item.lastRenovationDate)}" />
+
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/item_details_edit_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/action_edit_item"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/item_details_info" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/item_details_images"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:spanCount="3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/item_details_edit_button">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <Button
+            android:id="@+id/item_details_open_gallery_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/action_open_gallery"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/item_details_images" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

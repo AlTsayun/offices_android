@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Offices</string>
+
     <!-- Strings related to authentication -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -13,6 +14,7 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="invalid_display_name">Not a valid display name</string>
 
+    <!--  Toas messages  -->
     <string name="welcome">"Welcome !"</string>
     <string name="login_failed">"Login failed"</string>
     <string name="signup_failed">"Sign up failed"</string>
@@ -28,11 +30,24 @@
     <string name="overview_item_roomCount">rooms: %1$d</string>
     <string name="overview_item_area">area: %1$.2f m2</string>
 
+    <!--  item_details  -->
+    <string name="item_details_name">%1$s</string>
+    <string name="item_details_address">address: %1$s</string>
+    <string name="item_details_roomCount">rooms: %1$d</string>
+    <string name="item_details_area">area: %1$.2f m2</string>
+    <string name="item_details_description">description:\n%1$s</string>
+    <string name="item_details_floor">flor: %1$d of total %2$d</string>
+    <string name="item_details_hasBathroom">has bathroom</string>
+    <string name="item_details_hasNoBathroom">has no bathroom</string>
+    <string name="item_details_lastRenovationDate">last renovation date: %1$td-%1$tm-%1$tY</string>
+
     <!--  preferences  -->
     <string name="pref_key_logged_in_user">logged_in_user</string>
     <string name="pref_key_log_out">log_out</string>
     <string name="pref_key_font_size">font_size</string>
     <string name="pref_title_log_out">Log out</string>
     <string name="pref_title_font_size">Choose font size</string>
+    <string name="action_open_gallery">Open gallery</string>
+    <string name="action_edit_item">Edit item</string>
 
 </resources>

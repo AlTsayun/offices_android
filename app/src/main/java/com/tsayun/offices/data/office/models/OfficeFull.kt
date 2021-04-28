@@ -1,8 +1,9 @@
-package com.tsayun.offices.ui.item.itemDetails
+package com.tsayun.offices.data.office.models
 
+import com.google.android.gms.maps.model.LatLng
 import java.util.*
 
-data class ItemDetailsView(
+class OfficeFull(
     val id: UUID,
     val name: String,
     val area: Double,
@@ -13,5 +14,6 @@ data class ItemDetailsView(
     val numberOfFloors: Int,
     val hasBathroom: Boolean,
     val lastRenovationDate: Date,
+    val coordinates: LatLng,
     val imagesUrls: List<String>
 )

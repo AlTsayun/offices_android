@@ -2,10 +2,8 @@ package com.tsayun.offices.data.common
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
+import com.google.android.gms.maps.model.LatLng
+import com.google.firebase.database.*
 import com.tsayun.offices.data.authentication.login.LoginDataSource
 import com.tsayun.offices.data.common.model.Result
 import com.tsayun.offices.data.authentication.login.model.LoggedInUser
@@ -14,19 +12,24 @@ import com.tsayun.offices.data.authentication.common.model.Account
 import com.tsayun.offices.data.authentication.signup.SignUpDataSource
 import com.tsayun.offices.data.authentication.signup.model.SignedUpUser
 import com.tsayun.offices.data.office.OfficeDataSource
-import com.tsayun.offices.data.office.models.OfficeDetails
+import com.tsayun.offices.data.office.models.OfficeFull
+import com.tsayun.offices.data.office.models.OfficeOnMap
 import com.tsayun.offices.data.office.models.OfficePreview
 import java.io.IOException
+import java.text.SimpleDateFormat
 import java.util.*
 
-interface CommonDataSource: LoginDataSource, OfficeDataSource, SignUpDataSource
+interface CommonDataSource : LoginDataSource, OfficeDataSource, SignUpDataSource
 
-class FirebaseRealtimeDatabaseDataSource(private val databaseRef: DatabaseReference) : CommonDataSource {
+class FirebaseRealtimeDatabaseDataSource(private val databaseRef: DatabaseReference) :
+    CommonDataSource {
     private var accounts: MutableMap<String, Account> = mutableMapOf()
-    private var officesMap:  MutableMap<String, OfficeDetails> = mutableMapOf()
+    private var officesMap: MutableMap<String, OfficeFull> = mutableMapOf()
 
-    private val _offices = MutableLiveData<MutableMap<String, OfficeDetails>>()
-    override val offices: LiveData<MutableMap<String, OfficeDetails>> = _offices
+    private val _offices = MutableLiveData<MutableMap<String, OfficeFull>>()
+    override val offices: LiveData<MutableMap<String, OfficeFull>> = _offices
+
+    private val dateFormatter = SimpleDateFormat("dd-MM-yyyy", Locale.ROOT)
 
     init {
         _offices.value = officesMap
@@ -36,9 +39,12 @@ class FirebaseRealtimeDatabaseDataSource(private val databaseRef: DatabaseRefere
                 snapshot.children.forEach { childSnapshot ->
                     accounts[childSnapshot.key ?: throw DataSourceRetrievingException()] = Account(
                         UUID.fromString(childSnapshot.key),
-                        childSnapshot.child("name").getValue(String::class.java) ?: throw DataSourceRetrievingException(),
-                        childSnapshot.child("password").getValue(String::class.java) ?: throw DataSourceRetrievingException(),
-                        childSnapshot.child("email").getValue(String::class.java) ?: throw DataSourceRetrievingException()
+                        childSnapshot.child("name").getValue(String::class.java)
+                            ?: throw DataSourceRetrievingException(),
+                        childSnapshot.child("password").getValue(String::class.java)
+                            ?: throw DataSourceRetrievingException(),
+                        childSnapshot.child("email").getValue(String::class.java)
+                            ?: throw DataSourceRetrievingException()
                     )
                 }
             }
@@ -53,12 +59,38 @@ class FirebaseRealtimeDatabaseDataSource(private val databaseRef: DatabaseRefere
             override fun onDataChange(snapshot: DataSnapshot) {
                 snapshot.children.forEach { childSnapshot ->
                     officesMap[childSnapshot.key ?: throw DataSourceRetrievingException()] =
-                        OfficeDetails(
+                        OfficeFull(
                             UUID.fromString(childSnapshot.key),
-                            childSnapshot.child("name").getValue(String::class.java) ?: throw DataSourceRetrievingException(),
-                            childSnapshot.child("area").getValue(Double::class.java) ?: throw DataSourceRetrievingException(),
-                            childSnapshot.child("address").getValue(String::class.java) ?: throw DataSourceRetrievingException(),
-                            childSnapshot.child("roomCount").getValue(Int::class.java) ?: throw DataSourceRetrievingException()
+                            name = childSnapshot.child("name").getValue(String::class.java)
+                                ?: throw DataSourceRetrievingException(),
+                            area = childSnapshot.child("area").getValue(Double::class.java)
+                                ?: throw DataSourceRetrievingException(),
+                            address = childSnapshot.child("address").getValue(String::class.java)
+                                ?: throw DataSourceRetrievingException(),
+                            roomCount = childSnapshot.child("roomCount").getValue(Int::class.java)
+                                ?: throw DataSourceRetrievingException(),
+                            description = childSnapshot.child("description").getValue(String::class.java)
+                                ?: throw DataSourceRetrievingException(),
+                            floor = childSnapshot.child("floor").getValue(Int::class.java)
+                                ?: throw DataSourceRetrievingException(),
+                            numberOfFloors = childSnapshot.child("numberOfFloors").getValue(Int::class.java)
+                                ?: throw DataSourceRetrievingException(),
+                            hasBathroom = childSnapshot.child("hasBathroom").getValue(Boolean::class.java)
+                                ?: throw DataSourceRetrievingException(),
+                            lastRenovationDate = dateFormatter.parse(
+                                childSnapshot.child("lastRenovationDate")
+                                    .getValue(String::class.java)
+                                    ?: throw DataSourceRetrievingException()
+                            ) ?: throw DataSourceRetrievingException(),
+                            coordinates = LatLng(
+                                childSnapshot.child("coordinates").child("latitude")
+                                    .getValue(Double::class.java)
+                                    ?: throw DataSourceRetrievingException(),
+                                childSnapshot.child("coordinates").child("longitude")
+                                    .getValue(Double::class.java)
+                                    ?: throw DataSourceRetrievingException()
+                            ),
+                            imagesUrls = childSnapshot.child("images").children.map {it.getValue(String::class.java) ?: throw DataSourceRetrievingException()}
                         )
                     _offices.value = officesMap
 
@@ -70,12 +102,6 @@ class FirebaseRealtimeDatabaseDataSource(private val databaseRef: DatabaseRefere
             }
 
         })
-
-
-//        databaseRef.child("message").setValue("hello")
-
-//        val taskMap: Map<String, String> = mapOf("name" to "name2", "password" to "password")
-//        databaseRef.child("office2").updateChildren(taskMap)
 
     }
 
@@ -97,11 +123,66 @@ class FirebaseRealtimeDatabaseDataSource(private val databaseRef: DatabaseRefere
         // TODO: revoke authentication
     }
 
-    override fun getOfficeByIdOrNull(id: UUID): OfficeDetails? = _offices.value?.get(id.toString())
+    override fun getOfficeByIdOrNull(id: UUID): OfficeFull? = _offices.value?.get(id.toString())
 
 
-    override fun getAllOfficePreviews(): List<OfficePreview> =
-        _offices.value?.values?.map { OfficePreview(it.id, it.name, it.area, it.address, it.roomCount) } ?: listOf()
+    override fun create(
+        name: String,
+        area: Double,
+        address: String,
+        roomCount: Int,
+        description: String,
+        floor: Int,
+        numberOfFloors: Int,
+        hasBathroom: Boolean,
+        lastRenovationDate: Date
+    ): UUID {
+        val id = UUID.randomUUID()
+        update(
+            id,
+            name,
+            area,
+            address,
+            roomCount,
+            description,
+            floor,
+            numberOfFloors,
+            hasBathroom,
+            lastRenovationDate
+        )
+        return id
+    }
+
+    override fun update(
+        id: UUID,
+        name: String,
+        area: Double,
+        address: String,
+        roomCount: Int,
+        description: String,
+        floor: Int,
+        numberOfFloors: Int,
+        hasBathroom: Boolean,
+        lastRenovationDate: Date
+    ) {
+        val office = mapOf<String, String>(
+            "name" to name,
+            "area" to area.toString(),
+            "address" to address,
+            "roomCount" to roomCount.toString(),
+            "description" to description,
+            "floor" to floor.toString(),
+            "numberOfFloors" to numberOfFloors.toString(),
+            "hasBathroom" to hasBathroom.toString(),
+            "lastRenovationDate" to dateFormatter.format(lastRenovationDate)
+        )
+        databaseRef.child("offices").child(id.toString()).setValue(office)
+    }
+
+    override fun getAllOfficesOnMap(): List<OfficeOnMap> {
+        TODO("Not yet implemented")
+    }
+
 
     override fun signup(
         displayName: String,
@@ -111,11 +192,17 @@ class FirebaseRealtimeDatabaseDataSource(private val databaseRef: DatabaseRefere
         //todo: fix concurrent
         if (accounts.filterValues { it.email == username || it.name == displayName }.isEmpty()) {
             val id = UUID.randomUUID()
-            val user = mapOf<String, String>("email" to username, "name" to displayName, "password" to password)
+            val user = mapOf<String, String>(
+                "email" to username,
+                "name" to displayName,
+                "password" to password
+            )
             databaseRef.child("accounts").child(id.toString()).setValue(user)
             return Result.Success(SignedUpUser(id, displayName))
         } else {
             return Result.Error(IOException("Error singing up"))
         }
     }
+
+
 }
