@@ -1,0 +1,83 @@
+<resources>
+    <string name="app_name">Офисы</string>
+
+    <!-- Strings related to authentication -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Пароль</string>
+    <string name="prompt_display_name">Отображаемео имя</string>
+    <string name="action_sign_in">Войти</string>
+    <string name="action_sign_in_short">Войти</string>
+    <string name="action_sign_up">Зарегистрироваться</string>
+    <string name="action_sign_up_short">Зарегистрироваться</string>
+    <string name="action_create_account">Создать аккаунт</string>
+    <string name="invalid_username">Неверный логин</string>
+    <string name="invalid_password">Пароль должен содержать >5 символов</string>
+    <string name="invalid_display_name">Неверное имя пользователя</string>
+
+    <!--  Toast messages  -->
+    <string name="welcome">"Добро пожаловать !"</string>
+<!--    <string name="login_failed">"Ошибка входа"</string>-->
+<!--    <string name="signup_failed">"Ошибка регистрации"</string>-->
+
+    <!--  Strings related to bottom navigation bar  -->
+    <string name="navigation_home">Домой</string>
+    <string name="navigation_map">Карта</string>
+    <string name="navigation_settings">Настройки</string>
+
+    <!--  overview_item  -->
+    <string name="overview_item_name">%1$s</string>
+    <string name="overview_item_address">Адрес: %1$s</string>
+    <string name="overview_item_roomCount">Комнат: %1$d</string>
+    <string name="overview_item_area">Площадь: %1$.2f m2</string>
+
+    <!--  item_details  -->
+    <string name="item_details_name">%1$s</string>
+    <string name="item_details_address">Адрес: %1$s</string>
+    <string name="item_details_roomCount">Комнат: %1$d</string>
+    <string name="item_details_area">Площадь: %1$.2f м2</string>
+    <string name="item_details_description">Описание:\n%1$s</string>
+    <string name="item_details_floor">Этаж %1$d из %2$d</string>
+    <string name="item_details_hasBathroom">Есть санузел</string>
+    <string name="item_details_hasNoBathroom">Нет санузла</string>
+    <string name="item_details_lastRenovationDate">Последний ремонт: %1$td-%1$tm-%1$tY</string>
+
+    <!--  preferences  -->
+    <string name="pref_title_log_out">Выйти</string>
+    <string name="pref_title_theme">Тема приложения</string>
+    <string name="action_open_gallery">Открыть галерею</string>
+    <string name="action_edit_item">Редактировать</string>
+    <string name="prompt_name">Название</string>
+    <string name="prompt_address">Адрес</string>
+    <string name="prompt_room_count">Количество комнат</string>
+    <string name="prompt_area">Площадь</string>
+    <string name="prompt_floor">Этаж</string>
+    <string name="prompt_total_floors">Всего этажей</string>
+    <string name="pref_title_has_bathroom">Есть санузел</string>
+    <string name="pref_title_language">Язык приложения</string>
+
+    <!--  edit item  -->
+    <string name="item_edit_area_format">%1$.2f</string>
+    <string name="item_edit_longitude_format">%1$f</string>
+    <string name="item_edit_latitude_format">%1$f</string>
+    <string name="item_edit_room_count_format">%1$d</string>
+    <string name="item_edit_floor_format">%1$d</string>
+    <string name="item_edit_total_floors_format">%1$d</string>
+    <string name="item_edit_renovation_date_title">Дата ремонта:</string>
+    <string name="action_save_edited_item">Сохранить</string>
+    <string name="action_load_image">Загрузить изображение</string>
+    <string name="item_edit_coordinates_title">Координаты:</string>
+    <string name="prompt_longitude">Долгота</string>
+    <string name="prompt_latitude">Широта</string>
+    <string name="action_enter_image_url">Введите url</string>
+    <string name="action_ok">ОК</string>
+    <string name="action_cancel">Отмена</string>
+
+    <!--  toast texts  -->
+    <string name="toast_text_user_signed_up">Пользователь %1$s зарегистрирован</string>
+    <string name="toast_text_error_while_signing_up">Ошибка регистрации!</string>
+    <string name="toast_text_error_while_logging_in">Ошибка входа!</string>
+    <string name="toast_text_item_selected">Элемент %1$s выбран</string>
+    <string name="toast_text_item_selected_from_map">Элемент %1$s выбран из карты</string>
+    <string name="toast_text_item_saved">Элемент %1$s сохранён</string>
+    <string name="action_create_item">Создать</string>
+</resources>

@@ -37,4 +37,8 @@ class ItemsOverviewViewModel(private val officePreviewsRepository: OfficePreview
         _selectedItem.value = _items.value?.get(position)
     }
 
+    fun createItem(){
+        officePreviewsRepository.createNew()
+    }
+
 }

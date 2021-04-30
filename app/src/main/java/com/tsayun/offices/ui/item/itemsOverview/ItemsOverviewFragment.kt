@@ -29,13 +29,16 @@ class ItemsOverviewFragment : Fragment(R.layout.fragment_items_overview) {
         this.inflater = inflater
         binding = FragmentItemsOverviewBinding.inflate(inflater, container, false)
 
-        binding.itemsListView.setOnItemClickListener{ parent, view, position, id ->
+        binding.itemsOverviewItemsList.setOnItemClickListener{ parent, view, position, id ->
             itemsOverviewViewModel.selectItem(position)
+        }
+        binding.itemsOverviewCreate.setOnClickListener{
+            itemsOverviewViewModel.createItem()
         }
 
         itemsOverviewViewModel.items.observe(viewLifecycleOwner, Observer {
             val items = it ?: return@Observer
-            binding.itemsListView.adapter = object : BaseAdapter() {
+            binding.itemsOverviewItemsList.adapter = object : BaseAdapter() {
                 override fun getCount(): Int = items.size
 
 

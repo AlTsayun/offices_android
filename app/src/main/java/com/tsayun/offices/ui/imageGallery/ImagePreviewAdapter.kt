@@ -38,6 +38,10 @@ class ImagePreviewAdapter(
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
+
+        viewHolder.binding.root.setOnClickListener{
+            imageGalleryViewModel.selectItem(dataSet[position])
+        }
         Picasso.get().load(dataSet[position].url).into(viewHolder.binding.imagePreview)
     }
 

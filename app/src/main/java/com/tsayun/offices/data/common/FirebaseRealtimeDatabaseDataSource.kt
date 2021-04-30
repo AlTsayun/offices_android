@@ -69,13 +69,16 @@ class FirebaseRealtimeDatabaseDataSource(private val databaseRef: DatabaseRefere
                                 ?: throw DataSourceRetrievingException(),
                             roomCount = childSnapshot.child("roomCount").getValue(Int::class.java)
                                 ?: throw DataSourceRetrievingException(),
-                            description = childSnapshot.child("description").getValue(String::class.java)
+                            description = childSnapshot.child("description")
+                                .getValue(String::class.java)
                                 ?: throw DataSourceRetrievingException(),
                             floor = childSnapshot.child("floor").getValue(Int::class.java)
                                 ?: throw DataSourceRetrievingException(),
-                            numberOfFloors = childSnapshot.child("numberOfFloors").getValue(Int::class.java)
+                            numberOfFloors = childSnapshot.child("numberOfFloors")
+                                .getValue(Int::class.java)
                                 ?: throw DataSourceRetrievingException(),
-                            hasBathroom = childSnapshot.child("hasBathroom").getValue(Boolean::class.java)
+                            hasBathroom = childSnapshot.child("hasBathroom")
+                                .getValue(Boolean::class.java)
                                 ?: throw DataSourceRetrievingException(),
                             lastRenovationDate = dateFormatter.parse(
                                 childSnapshot.child("lastRenovationDate")
@@ -90,7 +93,11 @@ class FirebaseRealtimeDatabaseDataSource(private val databaseRef: DatabaseRefere
                                     .getValue(Double::class.java)
                                     ?: throw DataSourceRetrievingException()
                             ),
-                            imagesUrls = childSnapshot.child("images").children.map {it.getValue(String::class.java) ?: throw DataSourceRetrievingException()}
+                            imagesUrls = childSnapshot.child("images").children.map {
+                                it.getValue(
+                                    String::class.java
+                                ) ?: throw DataSourceRetrievingException()
+                            }
                         )
                     _offices.value = officesMap
 
@@ -135,7 +142,9 @@ class FirebaseRealtimeDatabaseDataSource(private val databaseRef: DatabaseRefere
         floor: Int,
         numberOfFloors: Int,
         hasBathroom: Boolean,
-        lastRenovationDate: Date
+        lastRenovationDate: Date,
+        coordinates: LatLng,
+        imagesUrls: List<String>
     ): UUID {
         val id = UUID.randomUUID()
         update(
@@ -148,7 +157,9 @@ class FirebaseRealtimeDatabaseDataSource(private val databaseRef: DatabaseRefere
             floor,
             numberOfFloors,
             hasBathroom,
-            lastRenovationDate
+            lastRenovationDate,
+            coordinates,
+            imagesUrls
         )
         return id
     }
@@ -163,23 +174,34 @@ class FirebaseRealtimeDatabaseDataSource(private val databaseRef: DatabaseRefere
         floor: Int,
         numberOfFloors: Int,
         hasBathroom: Boolean,
-        lastRenovationDate: Date
+        lastRenovationDate: Date,
+        coordinates: LatLng,
+        imagesUrls: List<String>
     ) {
-        val office = mapOf<String, String>(
+
+        //todo: check if saves correctly to firebase realtime database
+        val office = mapOf<String, Any>(
             "name" to name,
-            "area" to area.toString(),
+            "area" to area,
             "address" to address,
-            "roomCount" to roomCount.toString(),
+            "roomCount" to roomCount,
             "description" to description,
-            "floor" to floor.toString(),
-            "numberOfFloors" to numberOfFloors.toString(),
-            "hasBathroom" to hasBathroom.toString(),
+            "floor" to floor,
+            "numberOfFloors" to numberOfFloors,
+            "hasBathroom" to hasBathroom,
+            "images" to imagesUrls,
+            "coordinates" to coordinates.let {
+                mapOf<String, Double>(
+                    "latitude" to it.latitude,
+                    "longitude" to it.longitude
+                )
+            },
             "lastRenovationDate" to dateFormatter.format(lastRenovationDate)
         )
         databaseRef.child("offices").child(id.toString()).setValue(office)
     }
 
-    override fun getAllOfficesOnMap(): List<OfficeOnMap> {
+    override fun remove(id: UUID) {
         TODO("Not yet implemented")
     }
 

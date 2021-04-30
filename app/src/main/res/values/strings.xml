@@ -16,8 +16,8 @@
 
     <!--  Toas messages  -->
     <string name="welcome">"Welcome !"</string>
-    <string name="login_failed">"Login failed"</string>
-    <string name="signup_failed">"Sign up failed"</string>
+<!--    <string name="login_failed">"Login failed"</string>-->
+<!--    <string name="signup_failed">"Sign up failed"</string>-->
 
     <!--  Strings related to bottom navigation bar  -->
     <string name="navigation_home">Home</string>
@@ -42,12 +42,47 @@
     <string name="item_details_lastRenovationDate">last renovation date: %1$td-%1$tm-%1$tY</string>
 
     <!--  preferences  -->
-    <string name="pref_key_logged_in_user">logged_in_user</string>
-    <string name="pref_key_log_out">log_out</string>
-    <string name="pref_key_font_size">font_size</string>
+    <string name="pref_key_logged_in_user" translatable="false">logged_in_user</string>
+    <string name="pref_key_log_out" translatable="false">log_out</string>
+    <string name="pref_key_application_theme" translatable="false">application_theme</string>
+    <string name="pref_key_language" translatable="false">application_language</string>
+
     <string name="pref_title_log_out">Log out</string>
-    <string name="pref_title_font_size">Choose font size</string>
+    <string name="pref_title_theme">Choose theme</string>
     <string name="action_open_gallery">Open gallery</string>
     <string name="action_edit_item">Edit item</string>
+    <string name="prompt_name">Name</string>
+    <string name="prompt_address">Address</string>
+    <string name="prompt_room_count">Room count</string>
+    <string name="prompt_area">Area</string>
+    <string name="prompt_floor">Floor</string>
+    <string name="prompt_total_floors">Total floors</string>
+    <string name="pref_title_has_bathroom">Has bathroom</string>
+    <string name="pref_title_language">Application language</string>
 
+    <!--  edit item  -->
+    <string name="item_edit_area_format">%1$.2f</string>
+    <string name="item_edit_longitude_format">%1$f</string>
+    <string name="item_edit_latitude_format">%1$f</string>
+    <string name="item_edit_room_count_format">%1$d</string>
+    <string name="item_edit_floor_format">%1$d</string>
+    <string name="item_edit_total_floors_format">%1$d</string>
+    <string name="item_edit_renovation_date_title">Last renovation date:</string>
+    <string name="action_save_edited_item">Save</string>
+    <string name="action_load_image">Load Image</string>
+    <string name="item_edit_coordinates_title">Coordinates:</string>
+    <string name="prompt_longitude">Longitude</string>
+    <string name="prompt_latitude">Latitude</string>
+    <string name="action_enter_image_url">Enter url</string>
+    <string name="action_ok">OK</string>
+    <string name="action_cancel">Cancel</string>
+
+    <!--  toast texts  -->
+    <string name="toast_text_user_signed_up">User %1$s signed up</string>
+    <string name="toast_text_error_while_signing_up">Cannot sign up!</string>
+    <string name="toast_text_error_while_logging_in">Cannot log in!</string>
+    <string name="toast_text_item_selected">Item %1$s is selected</string>
+    <string name="toast_text_item_selected_from_map">Item %1$s is selected from map</string>
+    <string name="toast_text_item_saved">Item %1$s is saved</string>
+    <string name="action_create_item">Create new</string>
 </resources>

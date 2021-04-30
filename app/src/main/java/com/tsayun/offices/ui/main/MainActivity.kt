@@ -1,9 +1,10 @@
 package com.tsayun.offices.ui.main
 
 import android.content.SharedPreferences
-import androidx.appcompat.app.AppCompatActivity
+import android.content.res.Resources
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.add
 import androidx.fragment.app.commit
@@ -14,22 +15,32 @@ import com.google.gson.Gson
 import com.tsayun.offices.R
 import com.tsayun.offices.data.common.RepositoryFactory
 import com.tsayun.offices.data.common.RepositoryFactoryImpl
-import com.tsayun.offices.ui.common.ViewModelFactoryImpl
-import com.tsayun.offices.ui.item.itemsOverview.ItemsOverviewFragment
-import com.tsayun.offices.ui.item.itemsOverview.ItemsOverviewViewModel
+import com.tsayun.offices.ui.LocaleManager
 import com.tsayun.offices.ui.authentication.login.LoggedInUserView
 import com.tsayun.offices.ui.authentication.login.LoginFragment
 import com.tsayun.offices.ui.authentication.login.LoginViewModel
 import com.tsayun.offices.ui.authentication.signup.SignupFragment
 import com.tsayun.offices.ui.authentication.signup.SignupViewModel
+import com.tsayun.offices.ui.common.ViewModelFactoryImpl
+import com.tsayun.offices.ui.imageFull.ImageFullFragment
+import com.tsayun.offices.ui.imageFull.ImageFullView
+import com.tsayun.offices.ui.imageFull.ImageFullViewModel
+import com.tsayun.offices.ui.imageGallery.ImageGalleryFragment
+import com.tsayun.offices.ui.imageGallery.ImageGalleryViewModel
+import com.tsayun.offices.ui.imageGallery.ImagePreviewView
 import com.tsayun.offices.ui.item.itemDetails.ItemDetailsFragment
 import com.tsayun.offices.ui.item.itemDetails.ItemDetailsViewModel
+import com.tsayun.offices.ui.item.itemEdit.ItemEditFragment
+import com.tsayun.offices.ui.item.itemEdit.ItemEditViewModel
+import com.tsayun.offices.ui.item.itemsOverview.ItemsOverviewFragment
+import com.tsayun.offices.ui.item.itemsOverview.ItemsOverviewViewModel
 import com.tsayun.offices.ui.map.MapsFragment
 import com.tsayun.offices.ui.map.MapsViewModel
 import com.tsayun.offices.ui.navigation.NavigationFragment
 import com.tsayun.offices.ui.navigation.NavigationItem
 import com.tsayun.offices.ui.navigation.NavigationViewModel
 import com.tsayun.offices.ui.settings.SettingsFragment
+
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
@@ -40,6 +51,9 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private lateinit var homeFragment: Fragment
     private lateinit var mapsFragment: MapsFragment
     private lateinit var itemDetailsFragment: ItemDetailsFragment
+    private lateinit var imageGalleryFragment: ImageGalleryFragment
+    private lateinit var imageFullFragment: ImageFullFragment
+    private lateinit var itemEditFragment: ItemEditFragment
 
     private lateinit var repoFactory: RepositoryFactory
 
@@ -49,6 +63,9 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private lateinit var itemsOverviewViewModel: ItemsOverviewViewModel
     private lateinit var itemDetailsViewModel: ItemDetailsViewModel
     private lateinit var mapsViewModel: MapsViewModel
+    private lateinit var imageGalleryViewModel: ImageGalleryViewModel
+    private lateinit var imageFullViewModel: ImageFullViewModel
+    private lateinit var itemEditViewModel: ItemEditViewModel
 
     private lateinit var vmProvider: ViewModelProvider
 
@@ -67,6 +84,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         itemsOverviewViewModel = vmProvider.get(ItemsOverviewViewModel::class.java)
         itemDetailsViewModel = vmProvider.get(ItemDetailsViewModel::class.java)
         mapsViewModel = vmProvider.get(MapsViewModel::class.java)
+        imageGalleryViewModel = vmProvider.get(ImageGalleryViewModel::class.java)
+        imageFullViewModel = vmProvider.get(ImageFullViewModel::class.java)
+        itemEditViewModel = vmProvider.get(ItemEditViewModel::class.java)
+
 
         // fragments
         loginFragment = LoginFragment()
@@ -75,6 +96,9 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         settingsFragment = SettingsFragment()
         mapsFragment = MapsFragment()
         itemDetailsFragment = ItemDetailsFragment()
+        imageGalleryFragment = ImageGalleryFragment()
+        imageFullFragment = ImageFullFragment()
+        itemEditFragment = ItemEditFragment()
 
 
         //todo: fix getString(R.string)
@@ -97,17 +121,23 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
 
         signupViewModel.signupResult.observe(this, Observer {
-            val signupResult = it?: return@Observer
-            if (signupResult.success != null){
+            val signupResult = it ?: return@Observer
+            if (signupResult.success != null) {
                 Toast.makeText(
                     applicationContext,
-                    "User ${signupResult.success.displayName} signed up",
+                    getString(R.string.toast_text_user_signed_up, signupResult.success.displayName),
+                    Toast.LENGTH_SHORT
+                ).show()
+            } else {
+                Toast.makeText(
+                    applicationContext,
+                    getString(R.string.toast_text_error_while_signing_up),
                     Toast.LENGTH_SHORT
                 ).show()
             }
         })
         signupViewModel.loginRequest.observe(this, Observer {
-            var credentials = it?: return@Observer
+            var credentials = it ?: return@Observer
 
             homeFragment = loginFragment
             switchTo(homeFragment)
@@ -125,13 +155,15 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                 editor.apply()
             }
             if (loginResult.error != null) {
-                // todo: show error while login
-//                homeFragment = loginFragment
-//                switchTo(homeFragment)
+                Toast.makeText(
+                    applicationContext,
+                    getString(R.string.toast_text_error_while_logging_in),
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         })
         loginViewModel.signupRequest.observe(this, Observer {
-            var credentials = it?: return@Observer
+            var credentials = it ?: return@Observer
 
             homeFragment = signupFragment
             switchTo(homeFragment)
@@ -142,7 +174,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
             Toast.makeText(
                 applicationContext,
-                "Item ${selectedItem.name} is selected",
+                getString(R.string.toast_text_item_selected, selectedItem.name),
                 Toast.LENGTH_SHORT
             ).show()
             itemDetailsViewModel.setItem(selectedItem.id)
@@ -155,7 +187,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
             Toast.makeText(
                 applicationContext,
-                "Item ${selectedItem.title} is selected from map",
+                getString(R.string.toast_text_item_selected_from_map, selectedItem.title),
                 Toast.LENGTH_SHORT
             ).show()
             itemDetailsViewModel.setItem(selectedItem.id)
@@ -165,31 +197,43 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
         itemDetailsViewModel.openImagesRequest.observe(this, Observer {
             it ?: return@Observer
-            Toast.makeText(
-                applicationContext,
-                "Images of ${it.name} are opened",
-                Toast.LENGTH_SHORT
-            ).show()
+
+            homeFragment = imageGalleryFragment
+            imageGalleryViewModel.setItems(it.imagesUrls.map { ImagePreviewView(it) })
+            switchTo(homeFragment)
         })
         itemDetailsViewModel.editRequest.observe(this, Observer {
             it ?: return@Observer
+            homeFragment = itemEditFragment
+            switchTo(itemEditFragment)
+        })
+
+        imageGalleryViewModel.selectedItem.observe(this, Observer {
+            it ?: return@Observer
+
+            homeFragment = imageFullFragment
+            imageFullViewModel.setImage(ImageFullView(it.url))
+            switchTo(homeFragment)
+        })
+
+        itemEditViewModel.saveItemRequest.observe(this, Observer {
+            it ?: return@Observer
             Toast.makeText(
                 applicationContext,
-                "${it.name} is edited",
+                getString(R.string.toast_text_item_saved, it.name),
                 Toast.LENGTH_SHORT
             ).show()
+            homeFragment = itemsOverviewFragment
+            switchTo(homeFragment)
         })
 
         // need to be saved in field as gets removed by gc otherwise
         onSharedPreferenceChangeListener =
             SharedPreferences.OnSharedPreferenceChangeListener { sharedPreferences, key ->
-                if (key == getString(R.string.pref_key_font_size)) {
-                    val fontSize = sharedPreferences.getString("font_size", "a")
-                    Toast.makeText(
-                        applicationContext,
-                        "font_size is set to $fontSize",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                if (key == getString(R.string.pref_key_application_theme)) {
+                    val selectedTheme = sharedPreferences.getString(getString(R.string.pref_key_application_theme), "")
+                    finish()
+                    startActivity(intent)
                 }
                 if (key == getString(R.string.pref_key_logged_in_user)) {
                     val loggedInUserStr = sharedPreferences.getString(
@@ -198,17 +242,14 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                     )
                     if (loggedInUserStr != null) {
                         val model = Gson().fromJson(loggedInUserStr, LoggedInUserView::class.java)
-                        val welcome = getString(R.string.welcome)
-                        val displayName = model.displayName
 
                         navigationViewModel.enableMapState()
                         homeFragment = itemsOverviewFragment
                         switchTo(homeFragment)
 
-                        // TODO : initiate successful logged in experience
                         Toast.makeText(
                             applicationContext,
-                            "$welcome $displayName",
+                            "${getString(R.string.welcome)} ${model.displayName}",
                             Toast.LENGTH_LONG
                         ).show()
                     } else {
@@ -217,6 +258,17 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                         switchTo(homeFragment)
                     }
 
+                }
+                if (key == getString(R.string.pref_key_language)){
+                    val languageCode = sharedPreferences.getString(
+                        getString(R.string.pref_key_language),
+                        null
+                    )
+                    if (languageCode == "ru"){
+                        LocaleManager.setLocale(this, languageCode)
+                    } else {
+                        LocaleManager.setLocale(this, "en")
+                    }
                 }
             }
 
@@ -230,7 +282,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                 switchTo(settingsFragment)
             }
             if (navigation.selected == NavigationItem.HOME) {
-                if (homeFragment != loginFragment && homeFragment != signupFragment){
+                if (homeFragment != loginFragment && homeFragment != signupFragment) {
                     homeFragment = itemsOverviewFragment
                 }
                 switchTo(homeFragment)
@@ -254,6 +306,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     private fun switchTo(mainFragment: Fragment) {
         if (mainFragment == settingsFragment) {
             navigationViewModel.setNavigation(NavigationItem.SETTINGS)
+        } else if (mainFragment == mapsFragment){
+            navigationViewModel.setNavigation(NavigationItem.MAP)
         } else {
             navigationViewModel.setNavigation(NavigationItem.HOME)
         }
@@ -262,6 +316,20 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
             replace(R.id.main_fragment_container_view, mainFragment)
             addToBackStack(null)
         }
+    }
+
+    override fun getTheme(): Resources.Theme {
+        val theme: Resources.Theme = super.getTheme()
+        if (getDefaultSharedPreferences(this).getString(getString(
+                resources.getIdentifier(
+                    "pref_key_application_theme",
+                    "string",
+                    packageName
+                )
+            ), "") == "light") {
+            theme.applyStyle(R.style.Theme_Offices_Light, true)
+        }
+        return theme
     }
 
 }

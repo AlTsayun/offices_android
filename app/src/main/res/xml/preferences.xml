@@ -5,25 +5,27 @@
 
     <DropDownPreference
         android:defaultValue="1"
-        app:key="@string/pref_key_font_size"
-        app:title="@string/pref_title_font_size"
-        android:entries="@array/font_size_labels"
-        android:entryValues="@array/font_size_values"
-        app:useSimpleSummaryProvider="true"
-        >
-    </DropDownPreference>
+        android:entries="@array/theme_labels"
+        android:entryValues="@array/theme_values"
+        app:key="@string/pref_key_application_theme"
+        app:title="@string/pref_title_theme"
+        app:useSimpleSummaryProvider="true"/>
+
+    <DropDownPreference
+        android:defaultValue="1"
+        android:entries="@array/language_labels"
+        android:entryValues="@array/language_values"
+        app:key="@string/pref_key_language"
+        app:title="@string/pref_title_language"
+        app:useSimpleSummaryProvider="true"/>
 
     <Preference
-        app:key="@string/pref_key_logged_in_user"
-        app:isPreferenceVisible="false">
-    </Preference>
+        app:isPreferenceVisible="false"
+        app:key="@string/pref_key_logged_in_user"/>
 
-    <!--  todo:put logged in user to logout summary  -->
     <Preference
+        android:dependency="@string/pref_key_logged_in_user"
         app:key="@string/pref_key_log_out"
-        app:title="@string/pref_title_log_out"
-        android:dependency="@string/pref_key_logged_in_user">
-<!--    android:dependency="chb2">-->
-</Preference>
+        app:title="@string/pref_title_log_out"/>
 
 </PreferenceScreen>
